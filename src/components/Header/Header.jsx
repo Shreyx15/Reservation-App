@@ -1,8 +1,29 @@
 import { faBed, faCalendar, faCalendarDay, faCalendarDays, faCar, faPerson, faPlane, faTaxi } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { DateRangePicker } from 'react-date-range';
+import { useState } from 'react';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { compareAsc, format } from 'date-fns';
 import "./header.css";
+
 function Header() {
+    const [dateOpen, setDateOpen] = useState(false);
+    const [dateRange, setDateRange] = useState([
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection',
+        },
+    ]);
+
+    const [openOptions, setOpenOptions] = useState(false);
+    const [options, setOptions] = useState({
+        adults: 0,
+        children: 1,
+        rooms: 0
+    });
+
     return (
         <div className="Header">
             <div className="headerContainer">
@@ -41,18 +62,50 @@ function Header() {
                     </div>
                     <div className="headerSearchItem">
                         <FontAwesomeIcon icon={faCalendarDays} style={{ color: "Lightgray" }} />
-                        <span className="headerSearchText">check-in-date to check-out-date</span>
+                        <span onClick={() => { setDateOpen(!dateOpen) }} className="headerSearchText">{`${format(dateRange[0].startDate, "dd/MM/yyyy")} to ${format(dateRange[0].endDate, "dd/MM/yyyy")}`}</span>
+                        {dateOpen && <DateRangePicker
+                            ranges={dateRange}
+                            onChange={(ranges) => setDateRange([ranges.selection])}
+                            className="date"
+                        />}
                     </div>
+
                     <div className="headerSearchItem">
                         <FontAwesomeIcon icon={faPerson} style={{ color: "Lightgray" }} />
-                        <span className="headerSearchText">2 adults 2 children 1 room</span>
+                        <span className="headerSearchText">{`${options.adults} adults | ${options.children} children | ${options.rooms} rooms`}</span>
+                        <div className="options">
+                            <div className="optionItem">
+                                <span className="optionText">Adult</span>
+                                <div className="optionCounter">
+                                    <button className="optionCounterButton">+</button>
+                                    <span className="optionCounterNumber">1</span>
+                                    <button className="optionCounterButton">-</button>
+                                </div>
+
+                            </div>
+
+                            <div className="optionItem">
+                                <span className="optionText">Children</span>
+                                <div className="optionCounter">
+                                    <button className="optionCounterButton">+</button>
+                                    <span className="optionCounterNumber">1</span>
+                                    <button className="optionCounterButton">-</button>
+                                </div>
+                            </div>
+
+                            <div className="optionItem">
+                                <span className="optionText">Rooms</span>
+                                <div className="optionCounter">
+                                    <button className="optionCounterButton">+</button>
+                                    <span className="optionCounterNumber">1</span>
+                                    <button className="optionCounterButton">-</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className="headerSearchItem">
                         <button className="headerBtn">Search</button>
                     </div>
-
-
-
                 </div>
             </div>
         </div>

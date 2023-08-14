@@ -80,3 +80,43 @@
     color: lightgray;
     cursor: pointer;
 }
+
+.date {
+    position: absolute;
+    top: 50px;
+}
+
+.options {
+    position: absolute;
+    top: 50px;
+    background-color: white;
+    color: gray;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
+    padding: 20px;
+}
+
+.optionItem {
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+}
+
+.optionCounter {
+    border: 2px solid gray;
+    border-radius: 5px;
+}
+
+.optionCounterButton {
+    height: 40px;
+    width: 40px;
+    border: 0;
+    border-radius: 5px;
+
+}
+
+.optionCounterNumber {
+    margin: 7px;
+}
