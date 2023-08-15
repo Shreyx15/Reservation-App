@@ -1,8 +1,13 @@
 import "./list.css";
+import Navbar from "../../components/Navbar/Navbar";
+import Header from "../../components/Header/Header";
 
 function List() {
     return (
-        <div>Hello Shrey,  this is your hotels list!</div>
+        <div>
+            <Navbar />
+            <Header />
+        </div>
     );
 }
 

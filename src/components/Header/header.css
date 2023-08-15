@@ -54,6 +54,9 @@
     padding: 10px 0;
     width: 100%;
     max-width: 1024px;
+    box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.75);
+    border-radius: 7px;
+
 }
 
 .headerBtn {
@@ -107,6 +110,9 @@
 .optionCounter {
     border: 2px solid gray;
     border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .optionCounterButton {
@@ -114,9 +120,17 @@
     width: 40px;
     border: 0;
     border-radius: 5px;
-
+    color: rgba(0, 0, 255, 0.589);
+    font-size: larger;
+    cursor: pointer;
+    background-color: white;
 }
 
-.optionCounterNumber {
-    margin: 7px;
+.optionCounterButton:hover:not(:disabled) {
+    background-color: rgba(113, 113, 113, 0.225);
+}
+
+
+.optionCounterButton:disabled {
+    cursor: not-allowed;
 }
