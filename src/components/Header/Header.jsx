@@ -5,9 +5,12 @@ import { useState } from 'react';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { compareAsc, format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
+
 import "./header.css";
 
-function Header() {
+function Header({ type }) {
+    const navigate = useNavigate();
     const [dateOpen, setDateOpen] = useState(false);
     const [dateRange, setDateRange] = useState([
         {
@@ -24,6 +27,8 @@ function Header() {
         rooms: 0
     });
 
+    const [destination, setDestination] = useState("");
+
     function handleOptions(name, operation) {
         setOptions((prev) => {
             return {
@@ -33,9 +38,18 @@ function Header() {
 
         });
     }
+
+    function handleSearch() {
+        navigate("/hotels", {
+            state: {
+                destination, dateRange, options
+            }
+        });
+    }
+
     return (
         <div className="Header">
-            <div className="headerContainer">
+            <div className={`headerContainer ${type === "list" ? 'no-margin' : ''}`}>
                 <div className="HeaderList">
                     <div className="headerListItem active">
                         <FontAwesomeIcon icon={faBed} />
@@ -58,17 +72,19 @@ function Header() {
                         <span>Airport taxis</span>
                     </div>
                 </div>
-                <h1 className="headerTitle">
+
+                {type !== "list" && <div><h1 className="headerTitle">
                     Find your next stay
                 </h1>
-                <p className="headerDesc">
-                    Search low prices on hotels, homes and much more...
-                </p>
+                    <p className="headerDesc">
+                        Search low prices on hotels, homes and much more...
+                    </p>
+                </div>}
 
-                <div className="headerSearch">
+                {type !== "list" && <div className="headerSearch">
                     <div className="headerSearchItem">
                         <FontAwesomeIcon icon={faBed} style={{ color: "Lightgray" }} />
-                        <input type="text" placeholder="Where do you want to go?" className="headerSearchInput" />
+                        <input type="text" placeholder="Where do you want to go?" className="headerSearchInput" onChange={(e) => { setDestination(e.target.value) }} />
                     </div>
                     <div className="headerSearchItem">
                         <FontAwesomeIcon icon={faCalendarDays} style={{ color: "Lightgray" }} />
@@ -79,6 +95,7 @@ function Header() {
                             className="date"
                         />}
                     </div>
+
 
                     <div className="headerSearchItem">
                         <FontAwesomeIcon icon={faPerson} style={{ color: "Lightgray" }} />
@@ -113,9 +130,9 @@ function Header() {
                         </div>}
                     </div>
                     <div className="headerSearchItem">
-                        <button className="headerBtn">Search</button>
+                        <button className="headerBtn" onClick={handleSearch}>Search</button>
                     </div>
-                </div>
+                </div>}
             </div>
         </div>
     );

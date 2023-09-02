@@ -12,6 +12,12 @@
     margin: 20px 0 100px 0px;
 }
 
+.no-margin {
+    width: 100%;
+    max-width: 1024px;
+    margin: 20px 0 0px 0px;
+}
+
 .HeaderList {
     display: flex;
     gap: 40px;
