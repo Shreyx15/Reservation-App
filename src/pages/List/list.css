@@ -18,6 +18,7 @@
     border-radius: 10px;
     position: sticky;
     top: 10px;
+    height: max-content;
 }
 
 .lsTitle {
@@ -77,4 +78,15 @@
 
 .lsOptionInput {
     width: 50px;
+}
+
+.listSearch>button {
+    padding: 10px;
+    background-color: #0071c2;
+    color: white;
+    border: none;
+    width: 100%;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 5px;
 }
