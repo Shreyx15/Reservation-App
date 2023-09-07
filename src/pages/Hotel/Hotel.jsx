@@ -2,11 +2,14 @@ import Navbar from '../../components/Navbar/Navbar';
 import Header from '../../components/Header/Header';
 import './hotel.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faCircleArrowLeft, faCircleArrowRight, faCircleXmark, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import MailList from '../../components/mailList/MailList';
 import Footer from '../../components/Footer/Footer';
+import { useState } from 'react';
 
 function Hotel() {
+    const [sliderNumber, setSliderNumber] = useState(0);
+    const [open, setOpen] = useState(false);
 
     const photos = [
         { src: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/461492275.jpg?k=c4ad76e973479f94cc4daa4cc616a22b62e64992ee40f00539737902f8208b51&o=&hp=1" },
@@ -15,10 +18,36 @@ function Hotel() {
         { src: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/443844652.jpg?k=a0588110539eac1db509031fb630a6a0b430a7178a435a752ff35e7d5c04693c&o=&hp=1" },
         { src: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/443844964.jpg?k=1a0de1564f687afcd573c48e0e4b6518fb0c6231b195e3b72f9fc4057324841d&o=&hp=1" }
     ];
+
+    const handleOpen = (i) => {
+        setSliderNumber(i);
+        setOpen(true);
+    }
+
+    const handleMove = (direction) => {
+        let newSliderNumber;
+
+        if (direction === "l") {
+            newSliderNumber = sliderNumber === 0 ? 4 : sliderNumber - 1;
+        } else {
+            newSliderNumber = sliderNumber === 4 ? 0 : sliderNumber + 1;
+        }
+        setSliderNumber(newSliderNumber);
+    }
+
     return (
         <div>
             <Navbar />
             <Header type="list" />
+            {open && <div className="slider">
+                <FontAwesomeIcon icon={faCircleXmark} className="close" onClick={() => { setOpen(false) }} />
+                <FontAwesomeIcon icon={faCircleArrowLeft} className="arrow" onClick={() => { handleMove("l") }} />
+                <div className="sliderWrapper">
+                    <img src={photos[sliderNumber].src} alt="" className='sliderImg' />
+                </div>
+                <FontAwesomeIcon icon={faCircleArrowRight} className="arrow" onClick={() => { handleMove("r") }} />
+
+            </div>}
             <div className="hotelContainer">
 
                 <div className="hotelWrapper">
@@ -34,9 +63,9 @@ function Hotel() {
                         Book a stay over 4114 at this property and get a free airport taxi
                     </span>
                     <div className="hotelImages">
-                        {photos.map((photo) => (
+                        {photos.map((photo, i) => (
                             <div className="hotelImgWrapper" >
-                                <img src={photo.src} alt="" className="hotelImg" />
+                                <img onClick={() => { handleOpen(i) }} src={photo.src} alt="" className="hotelImg" />
                             </div>
                         ))}
                     </div>

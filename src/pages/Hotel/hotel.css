@@ -1,7 +1,12 @@
+body {
+    margin: 0;
+}
+
 .hotelContainer {
     display: flex;
     align-items: center;
     margin-top: 20px;
+    margin-right: 0;
     flex-direction: column;
 }
 
@@ -113,4 +118,49 @@
     border-radius: 5px;
     cursor: pointer;
     border-radius: 5px;
+}
+
+.slider {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.422);
+}
+
+.sliderWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sliderImg {
+    width: 80%;
+    height: 80vh;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+    font-size: 30px;
+    color: lightgray;
+    cursor: pointer;
+}
+
+.arrow {
+    z-index: 2;
+    margin: 20px;
+    font-size: 50px;
+    color: lightgray;
+    z-index: 2;
+    cursor: pointer;
+    border-radius: 30px;
 }
