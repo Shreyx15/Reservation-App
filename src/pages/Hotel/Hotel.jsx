@@ -56,7 +56,7 @@ function Hotel() {
                     <div className="hotelAddress">
                         <FontAwesomeIcon icon={faLocationDot} />
                         <span className="hotelDistance">
-                            Excellent location - 500m from center
+                            Excellent location - 200m from center
                         </span>
                     </div>
                     <span className="hotelPriceHighlight">
