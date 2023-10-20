@@ -6,7 +6,10 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { compareAsc, format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
-
+import { useContext } from "react";
+import { searchContext } from "../../context/SearchContext";
+import { AuthContext } from "../../context/AuthContext";
+import axios from 'axios';
 import "./header.css";
 
 function Header({ type }) {
@@ -28,6 +31,8 @@ function Header({ type }) {
     });
 
     const [destination, setDestination] = useState("");
+    const { dispatch } = useContext(searchContext);
+    const auth = useContext(AuthContext);
 
     function handleOptions(name, operation) {
         setOptions((prev) => {
@@ -37,14 +42,39 @@ function Header({ type }) {
             }
 
         });
+
     }
 
     function handleSearch() {
-        navigate("/hotels", {
-            state: {
-                destination, dateRange, options
+        const action = {
+            type: "UPDATE",
+            payload: {
+                city: destination,
+                dates: dateRange,
+                options: options
             }
-        });
+        };
+        dispatch(action);
+
+        navigate("/hotels");
+    }
+
+
+    const handleLogout = async () => {
+        const action = {
+            type: "LOGOUT"
+        }
+        auth.dispatch(action);
+        try {
+            const res = await axios.get("/auth/logout");
+            if (res) {
+                console.log(res);
+                navigate("/login");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
     }
 
     return (
@@ -70,6 +100,9 @@ function Header({ type }) {
                     <div className="headerListItem">
                         <FontAwesomeIcon icon={faTaxi} />
                         <span>Airport taxis</span>
+                    </div>
+                    <div className="headerListItem">
+                        <button className="headerBtn logout" onClick={handleLogout}>LogOut</button>
                     </div>
                 </div>
 

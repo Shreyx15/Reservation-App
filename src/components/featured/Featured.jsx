@@ -1,30 +1,102 @@
+import useFetch from "../../hooks/fetchData";
+import { useContext, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from "react-router-dom";
+import { searchContext } from "../../context/SearchContext";
+
 import "./featured.css";
 
 const Featured = () => {
+    const navigate = useNavigate();
+    const { city, dates, options, dispatch } = useContext(searchContext);
+    const { data, error, loading } = useFetch("/hotels/getFeatured");
+    const [imageWindow, setImageWindow] = useState({
+        start: 0,
+        end: 4
+    });
+    // console.log(data);
+
+    const countByCity = [];
+    const keys = Object.keys(data);
+
+    const handleSearch = (e, city) => {
+        const action = {
+            type: "UPDATE",
+            payload: {
+                city: city,
+                dates: dates,
+                options: options
+            }
+        }
+        dispatch(action);
+        console.log(city);
+        navigate("/hotels");
+    }
+    console.log(keys);
+    for (let i = imageWindow.start; i < Math.min(imageWindow.end, keys.length); i++) {
+        if (data?.hasOwnProperty(keys[i])) {
+            countByCity.push(
+                <>
+                    <img src={data[keys[i]].image} alt="" className="featuredImg" />
+
+                    <div className="featuredTitles">
+                        <h1>{keys[i]}</h1>
+                        <h2>{data[keys[i]].count}</h2>
+                    </div>
+                </>
+            );
+        }
+        console.log(data[keys[0]].image);
+    }
+    // countByCity.pop();
+
+
+    const handleClick = (operation) => {
+        if (operation === "i") {
+            setImageWindow({
+                start: imageWindow.start + 1,
+                end: imageWindow.end + 1
+            });
+        } else {
+            setImageWindow({
+                start: imageWindow.start - 1,
+                end: imageWindow.end - 1
+            });
+        }
+    }
+
+    const displayRight = () => {
+        console.log(keys);
+        if (imageWindow.end == keys.length + 1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    const displayLeft = () => {
+        if (imageWindow.start == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     return (
-        <div className="featured">
-            <div className="featuredItem">
-                <img src="https://cf.bstatic.com/xdata/images/city/600x600/684765.jpg?k=3f7d20034c13ac7686520ac1ccf1621337a1e59860abfd9cbd96f8d66b4fc138&o=" alt="" className="featuredImg" />
-                <div className="featuredTitles">
-                    <h1> New Delhi </h1>
-                    <h2>123 properties</h2>
-                </div>
+        <>
+            <div className="featured">
+                {displayRight() && <span onClick={e => { handleClick("i") }} className="slider-right">&gt;</span>}
+                {displayLeft() && <span onClick={e => { handleClick("d") }} className="slider-left">&lt;</span>}
+
+                {countByCity?.map((item, i) => {
+                    return (
+                        <div className="featuredItem" key={i} data-city={keys[i]} onClick={e => handleSearch(e, keys[i])}>
+                            {item}
+                        </div>
+                    );
+                })}
             </div>
-            <div className="featuredItem">
-                <img src="https://cf.bstatic.com/xdata/images/city/600x600/971346.jpg?k=40eeb583a755f2835f4dcb6900cdeba2a46dc9d50e64f2aa04206f5f6fce5671&o=" alt="" className="featuredImg" />
-                <div className="featuredTitles">
-                    <h1> Mumbai </h1>
-                    <h2>123 properties</h2>
-                </div>
-            </div>
-            <div className="featuredItem">
-                <img src="https://cf.bstatic.com/xdata/images/city/600x600/684730.jpg?k=e37b93d88c1fe12e827f10c9d6909a1def7349be2c68df5de885deaa4bc01ee3&o=" alt="" className="featuredImg" />
-                <div className="featuredTitles">
-                    <h1> Chennai </h1>
-                    <h2>123 properties</h2>
-                </div>
-            </div>
-        </div>
+        </>
     )
 }
 
